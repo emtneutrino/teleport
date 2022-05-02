@@ -39,7 +39,18 @@ local function notifyPlayer(msg)
 end
 
 RegisterCommand("tp", function(_, args)
-    if "show" == args[1] then
+    if nil == args[1] then
+        local msg = "Commands:\n"
+        msg = msg .. "Required arguments are in square brackets.\n"
+        msg = msg .. "/tp - display list of available /tp commands\n"
+        msg = msg .. "/tp show - show current coordinates\n"
+        msg = msg .. "/tp add [name] - add current coordinates as location named [name]\n"
+        msg = msg .. "/tp del [name] - delete location named [name]\n"
+        msg = msg .. "/tp lst - list all saved locations\n"
+        msg = msg .. "/tp to [x] [y] [z] - teleport to coordinates [x], [y], [z]\n"
+        msg = msg .. "/tp [name] - teleport to location named [name]\n"
+        notifyPlayer(msg)
+    elseif "show" == args[1] then
         local coord = GetEntityCoords(PlayerPedId())
         notifyPlayer(coord.x .. ", " .. coord.y .. ", " .. coord.z)
     elseif "add" == args[1] then
