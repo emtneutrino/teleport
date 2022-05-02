@@ -60,7 +60,7 @@ end
 RegisterNetEvent("teleport:add")
 AddEventHandler("teleport:add", function(name, coord)
     local source = source
-    if name ~=nil and coord ~= nil then
+    if name ~= nil and coord ~= nil then
         if nil == locations[name] then
             locations[name] = coord
             saveLocations()
@@ -76,7 +76,7 @@ end)
 RegisterNetEvent("teleport:del")
 AddEventHandler("teleport:del", function(name)
     local source = source
-    if name ~=nil then
+    if name ~= nil then
         if locations[name] ~= nil then
             locations[name] = nil
             saveLocations()
@@ -109,27 +109,10 @@ AddEventHandler("teleport:lst", function()
     end
 end)
 
-RegisterNetEvent("teleport:to")
-AddEventHandler("teleport:to", function(x, y, z)
-    local source = source
-    if x ~= nil and y ~= nil and z ~= nil then
-        x = tonumber(x)
-        y = tonumber(y)
-        z = tonumber(z)
-        if x ~= fail and y ~= fail and z ~= fail then
-            SetEntityCoords(NetworkGetEntityFromNetworkId(source), x, y, z, false, false, false, true)
-        else
-            notifyPlayer(source, "Invalid parameters.\n")
-        end
-    else
-        notifyPlayer(source, "Invalid parameters.\n")
-    end
-end)
-
 RegisterNetEvent("teleport:tp")
 AddEventHandler("teleport:tp", function(name)
     local source = source
-    if name ~=nil then
+    if name ~= nil then
         local coord = locations[name]
         if coord ~= nil then
             SetEntityCoords(NetworkGetEntityFromNetworkId(source), coord.x, coord.y, coord.z, false, false, false, true)

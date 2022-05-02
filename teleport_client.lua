@@ -38,6 +38,54 @@ local function notifyPlayer(msg)
     })
 end
 
+local function show()
+    local coord = GetEntityCoords(PlayerPedId())
+    notifyPlayer(coord.x .. ", " .. coord.y .. ", " .. coord.z)
+end
+
+local function add(name)
+    if name ~= nil then
+        TriggerServerEvent("teleport:add", name, GetEntityCoords(PlayerPedId()))
+    else
+        notifyPlayer("Name required.\n")
+    end
+end
+
+local function del(name)
+    if name ~= nil then
+        TriggerServerEvent("teleport:del", name)
+    else
+        notifyPlayer("Name required.\n")
+    end
+end
+
+local function lst()
+    TriggerServerEvent("teleport:lst")
+end
+
+local function to(x, y, z)
+    if x ~= nil and y ~= nil and z ~= nil then
+        x = tonumber(x)
+        y = tonumber(y)
+        z = tonumber(z)
+        if x ~= fail and y ~= fail and z ~= fail then
+            SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
+        else
+            notifyPlayer("Invalid parameters.\n")
+        end
+    else
+        notifyPlayer("Invalid parameters.\n")
+    end
+end
+
+local function tp(name)
+    if name ~= nil then
+        TriggerServerEvent("teleport:tp", name)
+    else
+        notifyPlayer("Name required.\n")
+    end
+end
+
 RegisterCommand("tp", function(_, args)
     if nil == args[1] then
         local msg = "Commands:\n"
@@ -51,17 +99,16 @@ RegisterCommand("tp", function(_, args)
         msg = msg .. "/tp [name] - teleport to location named [name]\n"
         notifyPlayer(msg)
     elseif "show" == args[1] then
-        local coord = GetEntityCoords(PlayerPedId())
-        notifyPlayer(coord.x .. ", " .. coord.y .. ", " .. coord.z)
+        show()
     elseif "add" == args[1] then
-        TriggerServerEvent("teleport:add", args[2], GetEntityCoords(PlayerPedId()))
+        add(args[2])
     elseif "del" == args[1] then
-        TriggerServerEvent("teleport:del", args[2])
+        del(args[2])
     elseif "lst" == args[1] then
-        TriggerServerEvent("teleport:lst")
+        lst()
     elseif "to" == args[1] then
-        TriggerServerEvent("teleport:to", args[2], args[3], args[4])
+        to(args[2], args[3], args[4])
     else
-        TriggerServerEvent("teleport:tp", args[1])
+        tp(args[1])
     end
 end)

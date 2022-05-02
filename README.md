@@ -15,6 +15,8 @@ Required arguments are in square brackets.\
 **`/tp to [x] [y] [z]`** - teleport to coordinates [x], [y], [z]\
 **`/tp [name]`** - teleport to location named [name]
 
+Note that all players on the server will have access to all saved locations.
+
 LICENSE
 -------
 Copyright (c) 2022, Neil J. Tan
