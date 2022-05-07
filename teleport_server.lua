@@ -115,7 +115,7 @@ AddEventHandler("teleport:tp", function(name)
     if name ~= nil then
         local coord = locations[name]
         if coord ~= nil then
-            SetEntityCoords(NetworkGetEntityFromNetworkId(source), coord.x, coord.y, coord.z, false, false, false, true)
+            TriggerClientEvent("teleport:tp", source, coord.x, coord.y, coord.z)
         else
             notifyPlayer(source, "Location '" .. name .. "' does not exist.\n")
         end

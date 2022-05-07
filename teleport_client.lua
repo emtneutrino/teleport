@@ -112,3 +112,8 @@ RegisterCommand("tp", function(_, args)
         tp(args[1])
     end
 end)
+
+RegisterNetEvent("teleport:tp")
+AddEventHandler("teleport:tp", function(x, y, z)
+    to(x, y, z)
+end)
