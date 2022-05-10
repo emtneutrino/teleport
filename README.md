@@ -13,6 +13,7 @@ Required arguments are in square brackets.\
 **`/tp del [name]`** - delete location named [name]\
 **`/tp lst`** - list all saved locations\
 **`/tp to [x] [y] [z]`** - teleport to coordinates [x], [y], [z]\
+**`/tp wp`** - teleport to waypoint set on waypoint map\
 **`/tp [name]`** - teleport to location named [name]
 
 Note that all players on the server will have access to all saved locations.

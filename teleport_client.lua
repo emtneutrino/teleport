@@ -78,6 +78,28 @@ local function to(x, y, z)
     end
 end
 
+local function wp()
+    if IsWaypointActive() == 1 then
+        local coord = GetBlipCoords(GetFirstBlipInfoId(8))
+        local found = false
+        for height = 1000.0, 0.0, -50.0 do
+            RequestAdditionalCollisionAtCoord(coord.x, coord.y, height)
+            Citizen.Wait(0)
+            local foundZ, groundZ = GetGroundZFor_3dCoord(coord.x, coord.y, height, true)
+            if 1 == foundZ then
+                found = true
+                to(coord.x, coord.y, groundZ)
+                break
+            end
+        end
+        if false == found then
+            notifyPlayer("Could not teleport to waypoint set on waypoint map.\n")
+        end
+    else
+        notifyPlayer("Waypoint not set on waypoint map.\n")
+    end
+end
+
 local function tp(name)
     if name ~= nil then
         TriggerServerEvent("teleport:tp", name)
@@ -96,6 +118,7 @@ RegisterCommand("tp", function(_, args)
         msg = msg .. "/tp del [name] - delete location named [name]\n"
         msg = msg .. "/tp lst - list all saved locations\n"
         msg = msg .. "/tp to [x] [y] [z] - teleport to coordinates [x], [y], [z]\n"
+        msg = msg .. "/tp wp - teleport to waypoint set on waypoint map\n"
         msg = msg .. "/tp [name] - teleport to location named [name]\n"
         notifyPlayer(msg)
     elseif "show" == args[1] then
@@ -108,6 +131,8 @@ RegisterCommand("tp", function(_, args)
         lst()
     elseif "to" == args[1] then
         to(args[2], args[3], args[4])
+    elseif "wp" == args[1] then
+        wp()
     else
         tp(args[1])
     end
