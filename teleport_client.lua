@@ -1,6 +1,6 @@
 --[[
 
-Copyright (c) 2022, Neil J. Tan
+Copyright (c) 2023, Neil J. Tan
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -64,15 +64,11 @@ local function lst()
 end
 
 local function to(x, y, z)
-    if x ~= nil and y ~= nil and z ~= nil then
-        x = tonumber(x)
-        y = tonumber(y)
-        z = tonumber(z)
-        if x ~= fail and y ~= fail and z ~= fail then
-            SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
-        else
-            notifyPlayer("Invalid parameters.\n")
-        end
+    x = tonumber(x)
+    y = tonumber(y)
+    z = tonumber(z)
+    if x ~= fail and y ~= fail and z ~= fail then
+        SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
     else
         notifyPlayer("Invalid parameters.\n")
     end
@@ -81,20 +77,16 @@ end
 local function wp()
     if IsWaypointActive() == 1 then
         local coord = GetBlipCoords(GetFirstBlipInfoId(8))
-        local found = false
         for height = 1000.0, 0.0, -50.0 do
             RequestAdditionalCollisionAtCoord(coord.x, coord.y, height)
             Citizen.Wait(0)
             local foundZ, groundZ = GetGroundZFor_3dCoord(coord.x, coord.y, height, true)
             if 1 == foundZ then
-                found = true
-                to(coord.x, coord.y, groundZ)
-                break
+                to(coord.x, coord.y, groundZ + 1.0)
+                return
             end
         end
-        if false == found then
-            notifyPlayer("Could not teleport to waypoint set on waypoint map.\n")
-        end
+        notifyPlayer("Could not teleport to waypoint set on waypoint map.\n")
     else
         notifyPlayer("Waypoint not set on waypoint map.\n")
     end

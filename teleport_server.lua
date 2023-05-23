@@ -1,6 +1,6 @@
 --[[
 
-Copyright (c) 2022, Neil J. Tan
+Copyright (c) 2023, Neil J. Tan
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -30,14 +30,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --]]
 
-local locationsDataFile <const> = "./resources/teleport/locationsData.json"
-
-local locations = {}
-local dataFile = io.open(locationsDataFile, "r")
-if dataFile ~= nil then
-    locations = json.decode(dataFile:read("a"))
-    dataFile:close()
+local function readData(filename)
+    return json.decode(LoadResourceFile(GetCurrentResourceName(), filename))
 end
+
+local function writeData(filename, data)
+    return 1 == SaveResourceFile(GetCurrentResourceName(), filename, json.encode(data), -1)
+end
+
+local locationsDataFileName <const> = "locationsData.json"
+
+local locations = readData(locationsDataFileName) or {}
 
 local function notifyPlayer(source, msg)
     TriggerClientEvent("chat:addMessage", source, {
@@ -48,12 +51,8 @@ local function notifyPlayer(source, msg)
 end
 
 local function saveLocations()
-    local file, errMsg, errCode = io.open(locationsDataFile, "w+")
-    if file ~= nil then
-        file:write(json.encode(locations))
-        file:close()
-    else
-        notifyPlayer(source, "saveLocations: Error opening file '" .. locationsDataFile .. "' for write : '" .. errMsg .. "' : " .. errCode .. "\n")
+    if false == writeData(locationsDataFileName, locations) then
+        notifyPlayer(source, "saveLocations: Error writing file '" .. locationsDataFileName .. "'\n")
     end
 end
 
