@@ -1,6 +1,6 @@
 --[[
 
-Copyright (c) 2023, Neil J. Tan
+Copyright (c) 2024, Neil J. Tan
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -44,18 +44,18 @@ local function show()
 end
 
 local function add(name)
-    if name ~= nil then
-        TriggerServerEvent("teleport:add", name, GetEntityCoords(PlayerPedId()))
-    else
+    if nil == name then
         notifyPlayer("Name required.\n")
+    else
+        TriggerServerEvent("teleport:add", name, GetEntityCoords(PlayerPedId()))
     end
 end
 
 local function del(name)
-    if name ~= nil then
-        TriggerServerEvent("teleport:del", name)
-    else
+    if nil == name then
         notifyPlayer("Name required.\n")
+    else
+        TriggerServerEvent("teleport:del", name)
     end
 end
 
@@ -67,15 +67,17 @@ local function to(x, y, z)
     x = tonumber(x)
     y = tonumber(y)
     z = tonumber(z)
-    if x ~= fail and y ~= fail and z ~= fail then
-        SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
-    else
+    if fail == x or fail == y or fail == z then
         notifyPlayer("Invalid parameters.\n")
+    else
+        SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
     end
 end
 
 local function wp()
-    if IsWaypointActive() == 1 then
+    if false == IsWaypointActive() then
+        notifyPlayer("Waypoint not set on waypoint map.\n")
+    else
         local coord = GetBlipCoords(GetFirstBlipInfoId(8))
         for height = 1000.0, 0.0, -50.0 do
             RequestAdditionalCollisionAtCoord(coord.x, coord.y, height)
@@ -87,32 +89,32 @@ local function wp()
             end
         end
         notifyPlayer("Could not teleport to waypoint set on waypoint map.\n")
-    else
-        notifyPlayer("Waypoint not set on waypoint map.\n")
     end
 end
 
 local function tp(name)
-    if name ~= nil then
-        TriggerServerEvent("teleport:tp", name)
-    else
+    if nil == name then
         notifyPlayer("Name required.\n")
+    else
+        TriggerServerEvent("teleport:tp", name)
     end
 end
 
 RegisterCommand("tp", function(_, args)
     if nil == args[1] then
-        local msg = "Commands:\n"
-        msg = msg .. "Required arguments are in square brackets.\n"
-        msg = msg .. "/tp - display list of available /tp commands\n"
-        msg = msg .. "/tp show - show current coordinates\n"
-        msg = msg .. "/tp add [name] - add current coordinates as location named [name]\n"
-        msg = msg .. "/tp del [name] - delete location named [name]\n"
-        msg = msg .. "/tp lst - list all saved locations\n"
-        msg = msg .. "/tp to [x] [y] [z] - teleport to coordinates [x], [y], [z]\n"
-        msg = msg .. "/tp wp - teleport to waypoint set on waypoint map\n"
-        msg = msg .. "/tp [name] - teleport to location named [name]\n"
-        notifyPlayer(msg)
+        notifyPlayer(
+            "\n" ..
+            "Commands:\n" ..
+            "Required arguments are in square brackets.\n" ..
+            "/tp - display list of available /tp commands\n" ..
+            "/tp show - show current coordinates\n" ..
+            "/tp add [name] - add current coordinates as location named [name]\n" ..
+            "/tp del [name] - delete location named [name]\n" ..
+            "/tp lst - list all saved locations\n" ..
+            "/tp to [x] [y] [z] - teleport to coordinates [x], [y], [z]\n" ..
+            "/tp wp - teleport to waypoint set on waypoint map\n" ..
+            "/tp [name] - teleport to location named [name]\n"
+        )
     elseif "show" == args[1] then
         show()
     elseif "add" == args[1] then

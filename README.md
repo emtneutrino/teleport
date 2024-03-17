@@ -20,7 +20,7 @@ Note that all players on the server will have access to all saved locations.
 
 LICENSE
 -------
-Copyright (c) 2023, Neil J. Tan
+Copyright (c) 2024, Neil J. Tan
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
