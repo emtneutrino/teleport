@@ -114,7 +114,7 @@ AddEventHandler("teleport:tp", function(name)
         if nil == coord then
             notifyPlayer(source, "Location '" .. name .. "' does not exist.\n")
         else
-            TriggerClientEvent("teleport:tp", source, coord.x, coord.y, coord.z)
+            TriggerClientEvent("teleport:tp", source, coord)
         end
     end
 end)

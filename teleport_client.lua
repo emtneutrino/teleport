@@ -70,7 +70,7 @@ local function to(x, y, z)
     if fail == x or fail == y or fail == z then
         notifyPlayer("Invalid parameters.\n")
     else
-        SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, true)
+        SetEntityCoords(PlayerPedId(), x * 1.0, y * 1.0, z * 1.0, false, false, false, true)
     end
 end
 
@@ -133,6 +133,6 @@ RegisterCommand("tp", function(_, args)
 end)
 
 RegisterNetEvent("teleport:tp")
-AddEventHandler("teleport:tp", function(x, y, z)
-    to(x, y, z)
+AddEventHandler("teleport:tp", function(coord)
+    to(coord.x, coord.y, coord.z)
 end)
